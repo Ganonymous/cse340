@@ -133,6 +133,38 @@ nav a {
   border: 1px solid black;
 }
 
+#inv-display {
+  list-style-type: none;
+}
+
+#inv-display li {
+  display: block;
+  margin: 0.1rem auto;
+  max-width: 80%;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#inv-display hr{
+  border: 2px solid black;
+}
+
+#inv-display img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.vehicle {
+  text-align: center;
+  margin: 0 2rem;
+}
+
+.vehicle img {
+  max-width: 90%;
+}
+
 @media (min-width: 800px) {
   body {
     background-image: url('../images/site/small_check.jpg');
@@ -179,5 +211,28 @@ nav a {
 
   .upgrades {
     grid-row: 3 / 4;
+  }
+
+  #inv-display {
+    grid-column: 1 / 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  #inv-display li {
+    width: 95%;
+  }
+
+  .vehicle {
+    grid-column: 1 / 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  main > p {
+    grid-column: 1 / 3;
+    display: block;
+    max-width: 80%;
+    margin: 0 auto;
   }
 }
