@@ -6,8 +6,16 @@
 
 <%- messages() %>
 
-<form>
-    <label>Email:<input type="email" id="account_email" name="account_email" required></label>
+<% if (errors) { %>
+    <ul class="notice">
+        <% errors.array().forEach(error => {%>
+        <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
+    <% } %>
+
+<form action="/account/login" method="post">
+    <label>Email:<input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>"></label>
     <label title="12 or more characters, at least each of: capital letter, number, and special character">
         Password<input type="password" id="account_password" name="account_password" required 
         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.\s).{12,}$"></label>
