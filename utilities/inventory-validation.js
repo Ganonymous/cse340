@@ -40,12 +40,10 @@ validate.inventoryRules = () => {
 
         body("inv_image", "A valid image path is required")
         .trim()
-        .escape()
-        .matches("^\/images\/vehicles.*\.(png|jpg|jpeg|gif|webp)$"),
+        .matches("^/images/vehicles.*\.(png|jpg|jpeg|gif|webp)$"),
 
         body("inv_thumbnail", "A valid thumbnail path is required")
         .trim()
-        .escape()
         .matches("^\/images\/vehicles.*-tn\.(png|jpg|jpeg|gif|webp)$"),
 
         body("inv_price", "The vehicle's price is required")

@@ -15,7 +15,7 @@
     <% } %>
 
 <form action="/inv/add-classification" method="post">
-    <label>Classification Name<input type="text" name="classification_name" id="classification_name" required value="<%locals.classification_name%>" pattern="^[a-zA-Z]+$"></label>
+    <label>Classification Name<input type="text" name="classification_name" id="classification_name" required value="<%= locals.classification_name %>" pattern="^[a-zA-Z]+$"></label>
     <p>Name must be letters of the alphabet only.</p>
     <input type="submit" value="Add Classification" id="addClassBtn">
 </form>
