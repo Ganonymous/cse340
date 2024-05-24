@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+:root {
+  --motorBlue: rgb(76, 150, 215);
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
 }
@@ -70,7 +74,7 @@ nav a {
   position: absolute;
   left: 0%;
   top: 0%;
-  color: rgb(76, 150, 215);
+  color: var(--motorBlue);
   background-color: rgba(255, 255, 255, 0.5);
   font-weight: bold;
 }
@@ -107,7 +111,7 @@ nav a {
 }
 
 .upgrades .imgBox {
-  background-color: rgb(76, 150, 215);
+  background-color: var(--motorBlue);
   padding: 10px 0;
   height: 82px;
   border: 1px solid black;
@@ -126,7 +130,7 @@ nav a {
 
 .upgrades figure {
   width: 90%;
-  background-color: rgb(76, 150, 215);
+  background-color: var(--motorBlue);
   justify-content: center;
   margin: 0 auto;
   padding: 10px 0;
@@ -165,6 +169,79 @@ nav a {
   max-width: 90%;
 }
 
+form {
+  max-width: 90%;
+  margin: 1rem auto;
+  background-color: var(--motorBlue);
+  padding: .5rem;
+  border-radius: 10px;
+  color: white;
+}
+
+
+form fieldset {
+  width: 95%;
+  margin: 0 auto;
+  border: 2px solid white;
+  border-radius: 5px;
+}
+
+form label {
+  display: block;
+  color: white;
+  padding-top: 1rem;
+}
+
+form label input {
+  display: block;
+}
+
+form label textarea {
+  display: block;
+  width: 70%;
+  height: 5rem;
+}
+
+input[type=submit] {
+  display: block;
+  margin: 1rem;
+  padding: .25rem;
+  border-radius: 5px;
+  border: 1px solid dimgray;
+}
+
+.links {
+  text-align: center;
+}
+
+main > label {
+  display: block;
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+tbody td {
+  border: 1px solid black;
+}
+
+td:first-child{
+  width: 60%;
+}
+
+td:nth-child(2), td:nth-child(3) {
+  width: 20%;
+}
+
+.notice {
+  color: rgb(220, 0, 0);
+}
+
 @media (min-width: 800px) {
   body {
     background-image: url('../images/site/small_check.jpg');
@@ -178,13 +255,13 @@ nav a {
     background-color: white;
   }
 
-  main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .wide-reverse {
+    display: flex;
+    flex-direction: row-reverse;
   }
 
-  h1, .hero {
-    grid-column: 1 / 3;
+  .wide-reverse * {
+    flex: 1 1 100%;
   }
 
   h1 {
@@ -205,16 +282,8 @@ nav a {
     font-size: 1.25rem;
   }
 
-  #reviews {
-    grid-column: 2 / 3;
-  }
-
-  .upgrades {
-    grid-row: 3 / 4;
-  }
 
   #inv-display {
-    grid-column: 1 / 3;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
@@ -224,14 +293,13 @@ nav a {
   }
 
   .vehicle {
-    grid-column: 1 / 3;
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
   main > p {
-    grid-column: 1 / 3;
     display: block;
+    text-align: center;
     max-width: 80%;
     margin: 0 auto;
   }

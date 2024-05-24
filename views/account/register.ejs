@@ -20,7 +20,7 @@
         <label>First name<input type="text" id="account_firstname" name="account_firstname" required value="<%= locals.account_firstname %>"></label>
         <label>Last name<input type="text" id="account_lastname" name="account_lastname"required value="<%= locals.account_lastname %>"></label>
         <label>Email address<input type="email" id="account_email" name="account_email"required value="<%= locals.account_email %>"></label>
-        <label title="12 or more characters, at least each of: capital letter, number, and special character">
+        <label title="12 or more characters, at least one each of: capital letter, number, and special character">
             Password<input type="password" id="account_password" name="account_password" required 
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.\s).{12,}$"></label>
         <input type="submit" value="Register" id="regBtn">    

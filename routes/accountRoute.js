@@ -4,6 +4,7 @@ const accController = require("../controllers/accController")
 const utilities = require("../utilities")
 const accValidate = require("../utilities/account-validation")
 
+router.get("/", utilities.checkLogin, utilities.handleErrors(accController.buildManagement))
 router.get("/login", utilities.handleErrors(accController.buildLogin))
 router.get("/register", utilities.handleErrors(accController.buildRegister))
 
@@ -17,6 +18,6 @@ router.post("/register",
 router.post("/login",
     accValidate.loginRules(),
     accValidate.checkLoginData,
-    utilities.handleErrors(accController.buildLogin)
+    utilities.handleErrors(accController.accountLogin)
 )
 module.exports = router
