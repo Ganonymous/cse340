@@ -112,7 +112,7 @@ Util.checkJWTToken = (req, res, next) => {
                     return res.redirect("/account/login")
                 }
                 res.locals.accountData = accountData
-                res.locals.loggedin = 1
+                res.locals.loggedIn = 1
                 next()
             }
         )
@@ -125,10 +125,19 @@ Util.checkJWTToken = (req, res, next) => {
 * Check Login
 ************************************* */
 Util.checkLogin = (req, res, next) => {
-    if(res.locals.loggedin) {
+    if(res.locals.loggedIn) {
         next()
     } else {
         req.flash("notice", "Please log in.")
+        return res.redirect("/account/login")
+    }
+}
+
+Util.checkAuthorized = (req, res, next) => {
+    if(res.locals.loggedIn && (res.locals.accountData.account_type == 'Employee' || res.locals.accountData.account_type == 'Admin')) {
+        next()
+    } else {
+        req.flash("notice", "Employees and Admins only. Please log in")
         return res.redirect("/account/login")
     }
 }

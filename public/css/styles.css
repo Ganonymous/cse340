@@ -240,6 +240,7 @@ td:nth-child(2), td:nth-child(3) {
 
 .notice {
   color: rgb(220, 0, 0);
+  list-style-type: none;
 }
 
 @media (min-width: 800px) {
@@ -302,5 +303,10 @@ td:nth-child(2), td:nth-child(3) {
     text-align: center;
     max-width: 80%;
     margin: 0 auto;
+  }
+
+  div#forms{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
