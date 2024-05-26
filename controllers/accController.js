@@ -104,6 +104,7 @@ async function accountLogin(req, res) {
         let match = await bcrypt.compare(account_password, accountData.account_password)
         if(match) {
             delete accountData.account_password
+            console.log("delete")
             const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600})
             console.log("token")
             if(process.nextTick.NODE_ENV === 'development') {
