@@ -102,8 +102,11 @@ async function accountLogin(req, res) {
         return
     }
     try {
-        if(await bcrypt.compare(account_password, accountData.account_password)) {
-            console.log("compare")
+        console.log("try")
+        let match = await bcrypt.compare(account_password, accountData.account_password)
+        console.log("bcrypt")
+        if(match) {
+            console.log("matched")
             delete accountData.account_password
             const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600})
             if(process.nextTick.NODE_ENV === 'development') {
@@ -112,6 +115,15 @@ async function accountLogin(req, res) {
                 res.cookie("jwt", accessToken, {httpOnly: true, secure: true, maxAge: 3600 * 1000})
             }
             return res.redirect("/account/")
+        } else {
+            req.flash("notice", "Please check your credentials and try again")
+            res.status(400).render("account/login", {
+                title: "Login",
+                nav,
+                errors: null,
+                account_email,
+            })
+            return
         }
     } catch (error) {
         return new Error('Access Forbidden')
