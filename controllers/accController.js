@@ -90,7 +90,6 @@ async function accountLogin(req, res) {
     let nav = await utilities.getNav()
     const {account_email, account_password} = req.body
     const accountData = await accountModel.getAccountByEmail(account_email)
-    console.log("model")
     if(!accountData){
         req.flash("notice", "Please check your credentials and try again")
         res.status(400).render("account/login", {
@@ -102,18 +101,17 @@ async function accountLogin(req, res) {
         return
     }
     try {
-        console.log("try")
         let match = await bcrypt.compare(account_password, accountData.account_password)
-        console.log("bcrypt")
         if(match) {
-            console.log("matched")
             delete accountData.account_password
             const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600})
+            console.log("token")
             if(process.nextTick.NODE_ENV === 'development') {
                 res.cookie("jwt", accessToken, {httpOnly: true, maxAge: 3600 * 1000})
             } else {
                 res.cookie("jwt", accessToken, {httpOnly: true, secure: true, maxAge: 3600 * 1000})
             }
+            console.log("cookie")
             return res.redirect("/account/")
         } else {
             req.flash("notice", "Please check your credentials and try again")
