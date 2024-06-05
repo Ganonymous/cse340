@@ -68,6 +68,12 @@ validate.inventoryRules = () => {
         .trim()
         .escape()
         .isLength({min: 1}),
+
+        body("inv_stock", "The number in stock is required")
+        .trim()
+        .escape()
+        .isLength({min: 1})
+        .isInt(),
     ]
 }
 
@@ -90,7 +96,7 @@ validate.checkClassificationData = async (req, res, next) => {
 
 validate.checkInvData = async (req, res, next) => {
     const {classification_id, inv_make, inv_model, inv_description, inv_image,
-    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color} = req.body
+    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, inv_stock} = req.body
     let errors = []
     errors = validationResult(req)
     if(!errors.isEmpty()) {
@@ -110,6 +116,7 @@ validate.checkInvData = async (req, res, next) => {
             inv_year,
             inv_miles,
             inv_color,
+            inv_stock,
         })
         return
     }
@@ -118,7 +125,7 @@ validate.checkInvData = async (req, res, next) => {
 
 validate.checkUpdateData = async (req, res, next) => {
     const {classification_id, inv_make, inv_model, inv_description, inv_image,
-    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, inv_id} = req.body
+    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color, inv_stock, inv_id} = req.body
     let errors = []
     errors = validationResult(req)
     if(!errors.isEmpty()) {
@@ -139,6 +146,7 @@ validate.checkUpdateData = async (req, res, next) => {
             inv_year,
             inv_miles,
             inv_color,
+            inv_stock,
             inv_id,
         })
         return

@@ -7,3 +7,7 @@
 <%- messages() %>
 
 <%- details %>
+<% if(showOrderButton) {%>
+    <h2>Order <%- makeModel %></h2>
+    <p><a href="/order/confirm/<%- inventory_id %>" title="Click to order <%- makeModel %>">Place Order</a></p>
+<% } %>

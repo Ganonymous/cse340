@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const orderModel = require("../models/order-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const Util = {}
@@ -28,7 +29,9 @@ Util.buildClassificationGrid = async function(data){
     if(data.length > 0){
         grid = '<ul id="inv-display">'
         data.forEach(vehicle => {
-            grid += '<li>'
+            grid += '<li'
+            if (vehicle.inv_stock < 1) grid += ' class="sold-out"'
+            grid += '>'
             grid += '<a href="../../inv/detail/' + vehicle.inv_id
             + '" title="View ' + vehicle.inv_make + ' ' + vehicle.inv_model
             + ' details"><img src="' + vehicle.inv_thumbnail
@@ -56,19 +59,22 @@ Util.buildClassificationGrid = async function(data){
 Util.buildVehicleDetails = async function(vehicle){
     let details
     if(vehicle){
-    details = '<section class="vehicle">'
-    details += '<img src="' + vehicle.inv_image
-    + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model
-    + ' on CSE Motors" />'
-    details += '<div class="details">'
-    details += `<h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>`
-    details += "<h3>Buy Now For: $"
-    + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + "</h3>" 
-    details += "<p>" + vehicle.inv_description + "</p>"
-    details += "<p><b>Mileage:</b> "
-    + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + "</p>"
-    details += "<p><b>Color:</b> " + vehicle.inv_color + "</p>"
-    details += "</div></section>"
+        details = '<section class="vehicle'
+        if (vehicle.inv_stock < 1) details += ' sold-out'
+        details += '">'
+        details += '<img src="' + vehicle.inv_image
+        + '" alt="Image of ' + vehicle.inv_make + " " + vehicle.inv_model
+        + ' on CSE Motors" />'
+        details += '<div class="details">'
+        details += `<h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>`
+        details += "<h3>Buy Now For: $"
+        + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + "</h3>" 
+        details += "<p>" + vehicle.inv_description + "</p>"
+        details += "<p><b>Mileage:</b> "
+        + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + "</p>"
+        details += "<p><b>Color:</b> " + vehicle.inv_color + "</p>"
+        details += "</div>"
+        details += "</section>"
     } else {
         details += '<p class = "notice">Something went wrong. That vehicle is missing!</p>'
     }
@@ -88,6 +94,45 @@ Util.buildClassificationList = async function (classification_id = null) {
     })
     classificationList += "</select>"
     return classificationList
+}
+
+Util.buildOrderLists = async function(){
+    let incompleteOrders = await orderModel.getOrders(false)
+    let availableTable
+    if(incompleteOrders.length > 0){
+        availableTable = `<table id="available-orders"><thead>`
+        availableTable += `<tr><td>Customer Name</td><td>Vehicle Name</td><td>Order Total</td><td>&nbsp;</td></tr>`
+        availableTable += `</thead><tbody>`
+        incompleteOrders.forEach((order) => {
+            availableTable += `<tr><td>${order.account_firstname} ${order.account_lastname}</td>`
+            availableTable += `<td>${order.inv_make} ${order.inv_model}</td>`
+            availableTable += `<td>$${new Intl.NumberFormat('en-US').format(order.order_total)}</td>`
+            availableTable += `<td><a href="/order/complete/${order.order_id}" title="Click to complete the order">Complete Order</a></td></tr>`
+        })
+        availableTable += `</tbody></table>`
+    } else {
+        availableTable = "<p>There are no incomplete orders</p>"
+    }
+
+    let allOrders = await orderModel.getOrders(true)
+    let allTable
+    if(allOrders.length > 0){
+        allTable = `<table id="all-orders"><thead>`
+        allTable += `<tr><td>Customer Name</td><td>Vehicle Name</td><td>Order Total</td><td>Order Status</td><td>&nbsp;</td></tr>`
+        allTable += `</thead><tbody>`
+        allOrders.forEach((order) => {
+            allTable += `<tr><td>${order.account_firstname} ${order.account_lastname}</td>`
+            allTable += `<td>${order.inv_make} ${order.inv_model}</td>`
+            allTable += `<td>$${new Intl.NumberFormat('en-US').format(order.order_total)}</td>`
+            allTable += `<td>${order.order_complete ? "Complete" : "Incomplete"}</td>`
+            allTable += `<td><a href="/order/delete/${order.order_id}" title="Click to delete the order">Delete Order</a></td></tr>`
+        })
+        allTable += `</tbody></table>`
+    } else {
+        allTable = "<p>There are no orders at all, actually</p>"
+    }
+
+    return {availableTable, allTable}
 }
 
 /* *********************************
@@ -138,6 +183,15 @@ Util.checkAuthorized = (req, res, next) => {
         next()
     } else {
         req.flash("notice", "Employees and Admins only. Please log in")
+        return res.redirect("/account/login")
+    }
+}
+
+Util.checkAdmin = (req, res, next) => {
+    if(res.locals.loggedIn &&  res.locals.accountData.account_type == 'Admin') {
+        next()
+    } else {
+        req.flash("notice", "Admins only. Please log in")
         return res.redirect("/account/login")
     }
 }

@@ -230,17 +230,45 @@ tbody td {
   border: 1px solid black;
 }
 
-td:first-child{
+#inventoryDisplay td:first-child{
   width: 60%;
 }
 
-td:nth-child(2), td:nth-child(3) {
+#inventoryDisplay td:nth-child(2), #inventory td:nth-child(3) {
   width: 20%;
+}
+
+#my-orders td:first-child{
+  width: 60%;
+}
+
+#my-orders td:nth-child(2), #my-orders td:nth-child(3) {
+  width: 20%;
+}
+
+#available-orders td:first-child, #all-orders td:first-child{
+  width: 40%;
+}
+
+#available-orders td:nth-child(n+2) {
+  width: 20%;
+}
+
+#all-orders td:nth-child(n+2){
+  width: 15%;
 }
 
 .notice {
   color: rgb(220, 0, 0);
   list-style-type: none;
+}
+
+.sold-out {
+  background-color: rgba(150, 15, 15, 0.6);
+}
+
+.sold-out img {
+  filter: grayscale(1);
 }
 
 @media (min-width: 800px) {
